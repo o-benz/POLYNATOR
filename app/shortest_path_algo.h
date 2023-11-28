@@ -52,7 +52,7 @@ uint8_t minDistance(uint8_t distance[], bool emptySet[]){
     //empty set for the shortest path tree
     //checks if the distance value of the vertex is equal to the current minimum distance. 
 
-    for(uint8_t i = 0; i< 28; i++){ //iterate through the vertices //chiffre magic 
+    for(uint8_t i = 0; i< MAX_VERTICES; i++){ //iterate through the vertices 
         if(!emptySet[i] && distance[i] <= min){
             min = distance[i];
             min_index = i;
