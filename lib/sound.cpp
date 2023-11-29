@@ -10,15 +10,11 @@ sound::sound()
 
 void sound::playNote(uint16_t note)
 {
-    TCNT2=0;
+    TCCR2A |= (1 << COM2A0);
     OCR2A = 8000000 / (2 * 1024 * tabNotes[note-45]) - 1;
 }
 
 void sound::stopSound()
 {
-    TCNT2=0;
-    DDRD=0;
-    TCCR2A=0;
-    TCCR2B=0;
-    OCR2A=0;
+    TCCR2A &= ~(1 << COM2A0);
 }

@@ -4,6 +4,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 #include "button.h"
 #include "can.h"
 #include "debug.h"
@@ -14,6 +15,7 @@
 #include "wheels.h"
 #include "lineFollower.h"
 #include "obstacleDetector.h"
+#include "map.h"
 
 class robot;
 
@@ -33,7 +35,12 @@ public:
     bool detect();
     void startTimer(uint16_t time);
     void stopTimer();
-
+    void playSoundEnd();
+    void playSoundObstacle();
+    void removePoint(uint8_t point);
+    map mapExec;
+    void resetMap();
+    
 private:
     timer timerExec;
     obstacleDetector obstacleDetectorExec;

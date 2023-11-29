@@ -20,10 +20,10 @@ private:
     bool analogRead(const uint8_t);
 
     // Numéro de pin du capteur
-    uint8_t distanceSensorPin = 50;
+    uint8_t distanceSensorPin = PA5;
 
     // Seuil de détection d'obstacle
-    uint16_t SEUIL_OBSTACLE = 128;
+    uint16_t SEUIL_OBSTACLE = 220;
 };
 
 #endif // OBSTACLEDETECTOR_H

@@ -6,37 +6,16 @@
 #define TWO_SEC_DELAY 2000
 #define PERIOD 126 // F_CPU/1024/25/2
 
-#include <avr/io.h>
-#include <util/delay.h>
-#include <avr/interrupt.h>
 #include "drive_corner.h"
 #include "lcm_so1602dtr_m.h"
 #include "customprocs.h"
 #include "lcm_so1602dtr_m_fw.h"
 
-
 #define DEMO_DDR   DDRC
 #define DEMO_PORT    PORTC   
 
-robot robotCorner;
-volatile bool isGreen = false;
-
-ISR(TIMER1_COMPA_vect) 
+void static inline wCorner(void)
 {
-    if(!isGreen)
-    {
-        robotCorner.setGreen();
-        //isGreen = true;
-    }
-    else
-    {
-        robotCorner.setDark();
-        //isGreen = false;
-    }
-    isGreen = !isGreen;
-}
-
-void static inline wCorner(void){
     cp_wait_ms(50);
 }
 
@@ -47,10 +26,10 @@ void corner_identify()
     uint8_t secondInt = 0;
     bool isTurnLeft = false;
     bool isLine = true;
-    robotCorner.setDark();
+    robotExec.setDark();
     _delay_ms(TWO_SEC_DELAY);
 
-    robotCorner.startTimer(PERIOD);
+    robotExec.startTimer(PERIOD);
 
     isTurnLeft = driveCorner(firstInt, isLine);
     turnCorner(isTurnLeft);
@@ -120,11 +99,11 @@ void corner_identify()
         disp.write("NORD", 16);
         wCorner();
     }
-    robotCorner.stopTimer();
-    robotCorner.playNote(4);
-    robotCorner.setGreen();
+    robotExec.stopTimer();
+    robotExec.playNote(4);
+    robotExec.setGreen();
     _delay_ms(ONE_SEC_DELAY);
-    robotCorner.stopSound();
+    robotExec.stopSound();
     return;
 }
 

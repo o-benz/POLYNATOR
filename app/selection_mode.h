@@ -2,6 +2,23 @@
 #include "corner_identifier.h"
 
 volatile bool gIsInterruptPressed = false;
+volatile bool isGreen = false;
+extern bool gExpiredTimer;
+volatile bool isCorner;
+
+ISR(TIMER1_COMPA_vect) 
+{
+    if(!isGreen && isCorner)
+    {
+        robotExec.setGreen();
+    }
+    else if (isGreen && isCorner)
+    {
+        robotExec.setDark();
+    }
+    isGreen = !isGreen;
+    gExpiredTimer = true;
+}
 
 ISR(INT0_vect) 
 {
@@ -17,13 +34,15 @@ void selection()
         if(gIsInterruptPressed)
         {
             gIsInterruptPressed = false;
+            isCorner = true;
             corner_identify();
             break;
         }
         if(gIsSelectionPressed)
         {
-            path_travel();
+            isCorner = false;
             gIsSelectionPressed = false;
+            path_travel();
             break;
         }
     }

@@ -1,17 +1,27 @@
-#ifndef DRIVE_CORNER
-#define DRIVE_CORNER
+#ifndef DRIVE_PATH
+#define DRIVE_PATH
 
-#define SPEED_WHEELS 140
-#define ROTATE_SPEED 80
+#define SPEED_WHEELS 140 //140
+#define ROTATE_SPEED 80 //80
 #define DELAY_ERROR 30
+#define DELAY_180 2000
+#define ROTATION_AXE 800
+#define PULSE 30
+#define ROTATE_MARGE 150
+#define WAIT 500
+#define DELAY_ERROR_2 190
+#define DELAY_ROTATE 100
+#define PUSH_ROTATE_180 200
 
-#include <avr/io.h>
-#include <util/delay.h>
-#include <avr/interrupt.h>
-#include "robot.h"
 
-class robot robotDrive;
-uint8_t sensor = 0;
+#define DELAY_TIMER 12000 // 14000
+
+
+#include "exec.h"
+
+uint8_t sensorPath = 0;
+
+bool gExpiredTimer = false;
 
 void driveLine(uint8_t intersectionNumber = 10, bool isLeftIntersection = true)
 {
@@ -29,103 +39,105 @@ void driveLine(uint8_t intersectionNumber = 10, bool isLeftIntersection = true)
     {
         rightIntersectionNumber = intersectionNumber;
     }
-    robotDrive.driveRatio(255,255);
-    _delay_ms(30);
-    while(isDriveLine && leftLineCounter < leftIntersectionNumber && rightLineCounter < rightIntersectionNumber)
+    robotExec.driveRatio(255,255);
+    gExpiredTimer = false;
+    robotExec.startTimer(DELAY_TIMER);
+    _delay_ms(PULSE);
+    while(isDriveLine && leftLineCounter < leftIntersectionNumber && rightLineCounter < rightIntersectionNumber && !gExpiredTimer)
     {
-        sensor = robotDrive.readSensor();
-        switch (sensor)
+        sensorPath = robotExec.readSensor();
+        switch (sensorPath)
         {
         case 0x04:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
             break;
 
         case 0x06:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS-30);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS-30);
             break;
         
         case 0x03:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS-30);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS-30);
             break;
         
         case 0x01:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS-30);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS-30);
             break;
 
         case 0x02:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS-30);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS-30);
             break;
 
         case 0x0C:
-            robotDrive.driveRatio(SPEED_WHEELS-30,SPEED_WHEELS);
+            robotExec.driveRatio(SPEED_WHEELS-30,SPEED_WHEELS);
             break;
         
         case 0x18:
-            robotDrive.driveRatio(SPEED_WHEELS-30,SPEED_WHEELS);
+            robotExec.driveRatio(SPEED_WHEELS-30,SPEED_WHEELS);
             break;
         
         case 0x10:
-            robotDrive.driveRatio(SPEED_WHEELS-30,SPEED_WHEELS);
+            robotExec.driveRatio(SPEED_WHEELS-30,SPEED_WHEELS);
             break;
 
         case 0x08:
-            robotDrive.driveRatio(SPEED_WHEELS-30,SPEED_WHEELS);
+            robotExec.driveRatio(SPEED_WHEELS-30,SPEED_WHEELS);
             break;
 
         case 0x0F:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
             _delay_ms(DELAY_ERROR);
-            if (robotDrive.readSensor() != 0x0F)
+            if (robotExec.readSensor() != 0x0F)
             {
                 break;
             }
-            _delay_ms(190);
+            _delay_ms(DELAY_ERROR_2);
             rightLineCounter++;
             break;
 
         case 0x07:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
             _delay_ms(DELAY_ERROR);
-            if (robotDrive.readSensor() != 0x07)
+            if (robotExec.readSensor() != 0x07)
             {
                 break;
             }
-            _delay_ms(190);
+            _delay_ms(DELAY_ERROR_2);
             rightLineCounter++;
             break;
         
         case 0x1C:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
             _delay_ms(DELAY_ERROR);
-            if (robotDrive.readSensor() != 0x1C)
+            if (robotExec.readSensor() != 0x1C)
             {
                 break;
             }
-            _delay_ms(190);
+            _delay_ms(DELAY_ERROR_2);
             leftLineCounter++;
             break;
         
         case 0x1E:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
             _delay_ms(DELAY_ERROR);
-            if (robotDrive.readSensor() != 0x1E)
+            if (robotExec.readSensor() != 0x1E)
             {
                 break;
             }
-            _delay_ms(190);
+            _delay_ms(DELAY_ERROR_2);
             leftLineCounter++;
             break;
         
         case 0x1F:
-            robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
-            _delay_ms(200);
+            robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
+            _delay_ms(DELAY_ERROR_2);
             leftLineCounter++;
             rightLineCounter++;
             break;
         
         case 0x00:
             _delay_ms(DELAY_ERROR);
-            if(robotDrive.readSensor() == 0x00)
+            if(robotExec.readSensor() == 0x00)
             {
                 isDriveLine = false;
                 break;
@@ -135,49 +147,71 @@ void driveLine(uint8_t intersectionNumber = 10, bool isLeftIntersection = true)
             break;
         }
     }
-    robotDrive.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
-    _delay_ms(1000);
-    robotDrive.driveRatio(0,0);
+    robotExec.stopTimer();
+    robotExec.driveRatio(SPEED_WHEELS,SPEED_WHEELS);
+    _delay_ms(ROTATION_AXE);
+    robotExec.driveRatio(0,0);
+    _delay_ms(WAIT);
     return;
 }
 
 void turnRight(uint8_t intersectionNumber = 1)
 {
     uint8_t crossedInteserction = 0;
-    robotDrive.driveRatio(255,255,true,false);
-    _delay_ms(200);
-    robotDrive.driveRatio(ROTATE_SPEED,ROTATE_SPEED,true,false);
+    robotExec.driveRatio(255,255,true,false);
+    _delay_ms(ROTATE_MARGE);
+    robotExec.driveRatio(ROTATE_SPEED,ROTATE_SPEED,true,false);
     while (crossedInteserction < intersectionNumber)
     {
-        sensor = robotDrive.readSensor();
-        if (sensor == 0x06)
+        sensorPath = robotExec.readSensor();
+        if (sensorPath == 0x06)
         {
             crossedInteserction++;
         }
-        _delay_ms(100);
+        _delay_ms(DELAY_ROTATE);
     }
-    robotDrive.driveRatio(0,0);
+    robotExec.driveRatio(0,0);
+    _delay_ms(WAIT);
+    return;
 }
 
 void turnLeft(uint8_t intersectionNumber = 1)
 {
     uint8_t crossedInteserction = 0;
-    robotDrive.driveRatio(255,255,false,true);
-    _delay_ms(200);
-    robotDrive.driveRatio(ROTATE_SPEED-5,ROTATE_SPEED-5,false,true);
+    robotExec.driveRatio(255,255,false,true);
+    _delay_ms(ROTATE_MARGE);
+    robotExec.driveRatio(ROTATE_SPEED-5,ROTATE_SPEED-5,false,true);
     while (crossedInteserction < intersectionNumber)
     {
-        sensor = robotDrive.readSensor();
-        if (sensor == 0x0C)
+        sensorPath = robotExec.readSensor();
+        if (sensorPath == 0x0C)
         {
             crossedInteserction++;
         }
         if (crossedInteserction < intersectionNumber)
         {
-            _delay_ms(100);
+            _delay_ms(DELAY_ROTATE);
         }
     }
-    robotDrive.driveRatio(0,0);
+    robotExec.driveRatio(0,0);
+    _delay_ms(WAIT);
+    return;
+}
+
+void turn180()
+{
+    robotExec.driveRatio(255,255,false,true);
+    _delay_ms(PUSH_ROTATE_180);
+    robotExec.driveRatio(ROTATE_SPEED,ROTATE_SPEED,false,true);
+    _delay_ms(DELAY_180);
+    sensorPath = robotExec.readSensor();
+    while(!(sensorPath &= 0x04))
+    {  
+        sensorPath = robotExec.readSensor();
+    }
+    robotExec.driveRatio(0,0);
+    _delay_ms(WAIT);
+    return;
 }
 
 #endif
