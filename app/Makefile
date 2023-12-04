@@ -24,7 +24,7 @@ MCU=atmega324pa
 # Nom de votre projet
 # (utilisez un seul mot, exemple: 'monprojet')
 
-PROJECTNAME= ReadMemory
+PROJECTNAME= FinalProject
 #___________________________________________________________________________________________________
 
 # Fichiers sources

@@ -40,29 +40,24 @@ volatile uint8_t curPoint = 0;
 
 void path_travel()
 {
-    // Switch case here is better: 
-
     robotExec.setDark();
     LCM disp(&DEMO_DDR, &DEMO_PORT); 
     
-    //if(gIsSelectionPressed){
-    //i++;}
-    // bool start = true;
     bool no = false;
     bool yes = false;  
     gIsSelectionPressed= false;
 
     static uint8_t row = 1; 
     static uint8_t column = 1;
-    bool linePicking = true;
+    bool rowSelection = true;
 
-    //i++;
     while(true)
     { 
-        while(linePicking)
+        while(rowSelection)
         {
             disp.write("LIGNE",0); 
             w();
+
             switch (row) 
             {
             case 1 :
@@ -113,31 +108,23 @@ void path_travel()
 
             if(gIsValidationPressed)
             {
-                linePicking = false;
+                rowSelection = false;
             }
             
         }
             
-        bool columnsPicking = false;
+        bool columnSelection = false;
         if(gIsValidationPressed)
         {
-            linePicking = false; 
-            //uint8_t i  = row;  // this is the row to travel to 
-            // char row[2]; // will need to redo the same thing for the switch case
-            //rowToGoTo = row; 
-            //itoa(i,row, 10); // 10 is for decimal 
-            //disp.write(row, 16);
-            //w();
+            rowSelection = false; 
             disp.clear();
-            columnsPicking = true;
-            //gIsSelectionPressed = true;
+
+            columnSelection = true;
             gIsValidationPressed = false;
-                
         }
 
-        while (columnsPicking) 
+        while (columnSelection) 
         {  
-            //disp.clear();
             disp.write("COLONNE",0); 
             w();
 
@@ -220,33 +207,34 @@ void path_travel()
 
             if(gIsValidationPressed)
             {
-                columnsPicking = false;
+                columnSelection = false;
             }
         }
         
         if(gIsValidationPressed )
         {
-                columnsPicking = false;
+                columnSelection = false;
                 disp.clear();
                 uint8_t i = row;
                 uint8_t j  = column; 
+                
                 char row[2];
                 char column[2];
                 itoa(i,row, 10);
                 itoa(j,column,10);
 
-                disp.write("(L: ", 0);
+                disp.write("(L: " + row + ",C: " + column + ")" + "OK ? ", 0);
                 w();
-                disp.write(row, 4);
-                w();
-                disp.write(",C: ", 6);
-                w();
-                disp.write(column,9); 
-                w();
-                disp.write(")", 10);
-                w();
-                disp.write("OK ? ", 12);
-                w();
+                // disp.write(row, 4);
+                // w();
+                // disp.write(",C: ", 6);
+                // w();
+                // disp.write(column,9); 
+                // w();
+                // disp.write(")", 10);
+                // w();
+                // disp.write("OK ? ", 12);
+                // w();
                 gIsValidationPressed = false;
                 no = true;
             }
@@ -260,7 +248,7 @@ void path_travel()
             {
                 disp.clear();
                 gIsValidationPressed = false;
-                linePicking = true; 
+                rowSelection = true; 
                 no = false;
                 row = 1;
                 column = 1; 
@@ -284,6 +272,7 @@ void path_travel()
                 yes = false;
                 gIsValidationPressed = false;
                 disp.clear();
+
                 // CODE DRIVE
                 _delay_ms(500);
                 curPoint = doTravel(row, column, curPoint);

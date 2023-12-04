@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef OBSTACLEDETECTOR_H
 #define OBSTACLEDETECTOR_H
 

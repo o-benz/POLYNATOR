@@ -1,3 +1,5 @@
+#pragma once
+
 #define DELAY_BUTTON 30
 
 #include <avr/io.h>

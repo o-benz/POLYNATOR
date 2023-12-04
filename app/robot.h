@@ -1,15 +1,12 @@
 #pragma once
-#define BUTTON_DEBOUNCE_DELAY 30
+#define BUTTON_DEBOUNCE_DELAY 50
 
 
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "button.h"
-#include "can.h"
-#include "debug.h"
 #include "led.h"
-#include "memoire_24.h"
 #include "sound.h"
 #include "timer.h"
 #include "wheels.h"

@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 C++ framework wrapping the LCM-SO1602DTR/M driver.
 Copyright (C) 2009  Philippe Proulx (philippe.proulx@polymtl.ca)

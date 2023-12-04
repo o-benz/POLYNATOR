@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 Custom procedures, mainly related to character arrays.
 Copyright (C) 2009  Philippe Proulx (philippe.proulx@polymtl.ca)
@@ -21,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <avr/io.h>
 
-#define CP_HEX_CHARLIST		"0123456789abcdef" // Liste des caractères hex.
+#define CP_HEX_CHARLIST		"0123456789abcdef" // Liste des caractï¿½res hex.
 // #define CP_HEX_CHARLIST	"0123456789abcdef" // Majuscules...
 
 uint16_t cp_strlen(const char*);

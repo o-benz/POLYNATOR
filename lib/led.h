@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 Led branchée sur les pins A6 et A7 par défaut.
 */ 

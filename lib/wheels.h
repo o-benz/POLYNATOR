@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 Roue gauche branchée sur les pins B4 et B5, roue droite branchée sur les pins B1 et B3
 */

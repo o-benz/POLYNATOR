@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 Timer 1 en mode CTC avec prescaler modifiable mais par défaut a 1024
 */

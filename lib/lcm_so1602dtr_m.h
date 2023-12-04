@@ -1,9 +1,11 @@
+#pragma once
+
 /*
  LCM-SO1602DTR/M driver for the ATmega16 (or any other compatible AVR chip).
  Copyright (C) 2009  Philippe Proulx (philippe.proulx@polymtl.ca)
  
  2012-02-08 - Ajout:
- Broche 0 ˆ 0V reliŽe ˆ VO pour un contraste maximal. - L. Tremblay
+ Broche 0 ï¿½ 0V reliï¿½e ï¿½ VO pour un contraste maximal. - L. Tremblay
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
@@ -32,8 +34,8 @@
 #define LCM_DB5		2 // Index de la broche sur DB5
 #define LCM_DB4		1 // Index de la broche sur DB4
 #define LCM_VO		0 // Index de la broche sur VO
-#define LCM_LINE1_ADR	0x00 // Adresse du début de la première ligne
-#define LCM_LINE2_ADR	0x40 // Adresse du début de la seconde ligne
+#define LCM_LINE1_ADR	0x00 // Adresse du dï¿½but de la premiï¿½re ligne
+#define LCM_LINE2_ADR	0x40 // Adresse du dï¿½but de la seconde ligne
 
 #define LCM_D_ON	1 // `Display ON'
 #define LCM_D_OFF	0 // `Display OFF'
@@ -41,8 +43,8 @@
 #define LCM_C_OFF	0 // `Cursor OFF'
 #define LCM_B_ON	1 // `Blink ON'
 #define LCM_B_OFF	0 // `Blink OFF'
-#define LCM_ID_INC	1 // Incrémenter l'adresse (après chaque transfert)
-#define LCM_ID_DEC	0 // Décrémenter l'adresse (après chaque transfert)
+#define LCM_ID_INC	1 // Incrï¿½menter l'adresse (aprï¿½s chaque transfert)
+#define LCM_ID_DEC	0 // Dï¿½crï¿½menter l'adresse (aprï¿½s chaque transfert)
 #define LCM_S_ON	1 // `Display Shift ON'
 #define LCM_S_OFF	0 // `Display Shift OFF'
 #define LCM_SC_SHIFT	1 // `Shift Display'
