@@ -1,18 +1,15 @@
 #define DELAY_BUTTON 30
-
-#include <stdlib.h>
-
-#include "lcm_so1602dtr_m.h"
-#include "customprocs.h"
-#include "lcm_so1602dtr_m_fw.h"
-#include "travel.h"
-
-
 #define DEMO_DDR   DDRC
 #define DEMO_PORT    PORTC   
 
 #define COLUMNS 7
 #define ROWS 4
+
+#include <stdlib.h>
+#include "lcm_so1602dtr_m.h"
+#include "customprocs.h"
+#include "lcm_so1602dtr_m_fw.h"
+#include "travel.h"
 
 volatile bool gIsSelectionPressed = false;
 volatile bool gIsValidationPressed = false;
@@ -213,31 +210,29 @@ void path_travel()
         
         if(gIsValidationPressed )
         {
-                columnSelection = false;
-                disp.clear();
-                uint8_t i = row;
-                uint8_t j  = column; 
-                
-                char row[2];
-                char column[2];
-                itoa(i,row, 10);
-                itoa(j,column,10);
+            columnSelection = false;
+            disp.clear();
+            uint8_t i = row;
+            uint8_t j  = column; 
 
-                disp.write("(L: " + row + ",C: " + column + ")" + "OK ? ", 0);
-                w();
-                // disp.write(row, 4);
-                // w();
-                // disp.write(",C: ", 6);
-                // w();
-                // disp.write(column,9); 
-                // w();
-                // disp.write(")", 10);
-                // w();
-                // disp.write("OK ? ", 12);
-                // w();
-                gIsValidationPressed = false;
-                no = true;
-            }
+            char row[2];
+            char column[2];
+            itoa(i,row, 10);
+            itoa(j,column,10);
+
+            disp.write("( ", 0);
+            w();
+            disp.write(row, 1);
+            w();
+            disp.write(", ", 2);
+            w();
+            disp.write(column,4); 
+            w();
+            disp.write(") OK?", 5);
+            w();
+            gIsValidationPressed = false;
+            no = true;
+        }
 
         if(no)
         {

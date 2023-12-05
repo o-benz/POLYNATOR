@@ -6,14 +6,14 @@
 #define ROTATE_SPEED_LEFT 80 //80
 #define ROTATE_SPEED_RIGHT 75
 #define DELAY_ERROR 30
-#define DELAY_180 2000
-#define ROTATION_AXE 1000
+#define DELAY_180 1500
+#define ROTATION_AXE 1050
 #define PULSE 30
-#define ROTATE_MARGE 200
-#define WAIT 500
+#define ROTATE_MARGE 250
+#define WAIT 300
 #define DELAY_ERROR_2 190
 #define DELAY_ROTATE 100
-#define PUSH_ROTATE_180 200
+#define PUSH_ROTATE_180 300
 
 
 #define DELAY_TIMER 14000 // 14000
@@ -24,6 +24,42 @@
 uint8_t sensorPath = 0;
 
 bool gExpiredTimer = false;
+
+void alignment()
+{
+    sensorPath = robotExec.readSensor();
+    if(sensorPath != 0x00)
+    {
+        uint8_t sensor_1 = (sensorPath & 0x01);
+        uint8_t sensor_2 = (sensorPath & 0x02);
+        uint8_t sensor_4 = (sensorPath & 0x08);
+        uint8_t sensor_5 = (sensorPath & 0x10);        
+        if(sensor_1 || sensor_2)
+        {
+            while(!(sensorPath &= 0x04))
+            {
+                robotExec.driveRatio(255,255,true,false);
+                _delay_ms(DELAY_ERROR); 
+                robotExec.driveRatio(0,0);
+                _delay_ms(DELAY_ERROR_2);
+                sensorPath = robotExec.readSensor();
+            }
+        }
+        else if(sensor_4 || sensor_5)
+        {
+            while(!(sensorPath &= 0x04))
+            {
+                robotExec.driveRatio(255,255,false,true);
+                _delay_ms(DELAY_ERROR); 
+                robotExec.driveRatio(0,0);
+                _delay_ms(DELAY_ERROR_2);
+                sensorPath = robotExec.readSensor();
+            }
+        }
+    }
+    _delay_ms(WAIT);
+    return;
+}
 
 void driveLine()
 {
@@ -141,6 +177,7 @@ void driveLine()
     _delay_ms(ROTATION_AXE);
     robotExec.driveRatio(0,0);
     _delay_ms(WAIT);
+    alignment();
     return;
 }
 
@@ -148,19 +185,15 @@ void turnRight()
 {
     robotExec.driveRatio(255,255,true,false);
     _delay_ms(ROTATE_MARGE);
+    sensorPath = robotExec.readSensor();
     robotExec.driveRatio(ROTATE_SPEED_LEFT,ROTATE_SPEED_RIGHT,true,false);
     while(!(sensorPath &= 0x04))
     {
         sensorPath = robotExec.readSensor();
-        _delay_ms(DELAY_ROTATE);        // Maybe remove
     }
     robotExec.driveRatio(0,0);
     _delay_ms(WAIT);
-    while(!(sensorPath == 0x04))
-    {
-        robotExec.driveRatio(ROTATE_SPEED_LEFT,ROTATE_SPEED_RIGHT,false,true);
-        _delay_ms(DELAY_ERROR); // Délai à ajuster pour être parfaitement aligné
-    }
+    alignment();
     return;
 }
 
@@ -168,20 +201,15 @@ void turnLeft()
 {
     robotExec.driveRatio(255,255,false,true);
     _delay_ms(ROTATE_MARGE);
+    sensorPath = robotExec.readSensor();
     robotExec.driveRatio(ROTATE_SPEED_LEFT,ROTATE_SPEED_RIGHT,false,true);
     while(!(sensorPath &= 0x04))
     {
-
         sensorPath = robotExec.readSensor();
-        _delay_ms(DELAY_ROTATE) ;        // Maybe remove
     }
     robotExec.driveRatio(0,0);
     _delay_ms(WAIT);
-    while(!(sensorPath == 0x04))
-    {
-        robotExec.driveRatio(ROTATE_SPEED_LEFT,ROTATE_SPEED_RIGHT,true,false);
-        _delay_ms(DELAY_ERROR); // Délai à ajuster pour être parfaitement aligné
-    }
+    alignment();
     return;
 }
 
@@ -198,11 +226,7 @@ void turn180()
     }
     robotExec.driveRatio(0,0);
     _delay_ms(WAIT);
-    while(!(sensorPath == 0x04))
-    {
-        robotExec.driveRatio(ROTATE_SPEED_LEFT,ROTATE_SPEED_RIGHT,true,false);
-        _delay_ms(DELAY_ERROR); // Délai à ajuster pour être parfaitement aligné
-    }
+    alignment();
     return;
 }
 

@@ -78,7 +78,7 @@ void robot::playSoundEnd()
 
 void robot::playSoundObstacle()
 {
-    soundExec.playNote(20);
+    soundExec.playNote(1);
     _delay_ms(2000);
     soundExec.stopSound();
     return;
