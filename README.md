@@ -8,7 +8,7 @@ A high-performance line-following robot with seamless hardware-software integrat
 - [Getting Started](#getting-started)
 - [Hardware Components](#hardware-components)
 - [Pictures](#pictures)
-- [Demo Video](#demo-video)
+- [Award](#award)
 
 ## Description
 This project features two distinct modes accessible through buttons:
@@ -73,7 +73,6 @@ For a more visual representation, please consult the image below.
 ![Picture 2](/doc/polynator2.png)
 *The POLYNATOR*
 
-## Demo Video
+## Award
 
-[![Demo Video](/doc/demo.mp4)](/doc/demo.mp4)
-*Click on the video to watch the demo.*
+This project received the *Philip and Lily Malouf Award* for outstanding computer/software engineering project, recognizing its innovative design and outstanding performance.
