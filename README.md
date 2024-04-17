@@ -68,11 +68,11 @@ For a more visual representation, please consult the image below.
 ## Pictures
 
 ![Picture 1](/doc/polynator1.png)
-*The POLYNATOR*
 
 ![Picture 2](/doc/polynator2.png)
-*The POLYNATOR*
 
 ## Award
 
-This project received the *Philip and Lily Malouf Award* for outstanding computer/software engineering project, recognizing its innovative design and outstanding performance.
+This project received the [*Philip and Lily Malouf Award*](https://cours.polymtl.ca/inf1900/prixMalouf/) for outstanding computer/software engineering project, recognizing its innovative design and outstanding performance.
+
+![image](https://github.com/o-benz/The-Polynator/assets/104547346/ec69f5c3-3c1c-4489-80be-b57b7934514b)
